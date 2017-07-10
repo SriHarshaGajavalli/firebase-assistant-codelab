@@ -146,8 +146,20 @@ Okay, my first question is: ${snap.val().q}
            const g_snap = results[1];
 
            // TODO codelab-1: set the proper contexts to learn the differentiation
-           const speech = `I don't know how to tell a ${new_thing} from a ${g_snap.val().a}!`;
-           assistant.ask(speech);
+           const speech = `
+I need to know how to tell a ${new_thing} from a ${g_snap.val().a} using a yes-no question.
+The answer must be "yes" for ${new_thing}. What question should I use?
+`;
+
+const discrmParameters = {};
+discrmParameters[LEARN_DISCRIMINATION_PARAM] = true;
+assistant.setContext(LEARN_DISCRIM_CONTEXT, 2, discrmParameters);
+
+const answerParameters = {};
+answerParameters[ANSWER_PARAM] = new_thing;
+assistant.setContext(ANSWER_CONTEXT, 2, answerParameters);
+
+assistant.ask(speech);
        });
    }
 
@@ -179,7 +191,13 @@ Okay, my first question is: ${snap.val().q}
        update[branch] = q_node.key;
        graph.child(priorQuestion).update(update).then(() => {
            // TODO codelab-2: give the user an option to play again or end the conversation
-           const speech = "Ok, thanks for the information!";
+           const speech = `<speak>
+OK, thanks for the information! I'll remember to ask "${question}" to see if you're thinking of ${predicate} ${answer}.
+<break time="1">
+Would you like to play again?
+</speak>
+`;
+assistant.setContext(WELCOME_CONTEXT, 1);
            assistant.ask(speech);
        });
    }
