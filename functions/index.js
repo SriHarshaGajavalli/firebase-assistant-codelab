@@ -197,7 +197,7 @@ OK, thanks for the information! I'll remember to ask "${question}" to see if you
 Would you like to play again?
 </speak>
 `;
-assistant.setContext(WELCOME_CONTEXT, 1);
+assistant.setContext(WELCOME_CONTEXT, 1);	
            assistant.ask(speech);
        });
    }
